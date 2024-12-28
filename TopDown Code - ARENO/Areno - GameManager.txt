@@ -1,0 +1,124 @@
+using UnityEngine;
+using UnityEngine.SceneManagement;
+
+public class GameManager : MonoBehaviour
+{
+    public static GameManager instance;
+
+    public float timer = 0;
+    public float execute = 1;
+    private bool Timercmd = false;
+
+    public ScoreManager scoreManager;
+
+    void Awake()
+    {
+        // Ensure only one instance of the GameManager exists
+        if (instance == null)
+        {
+            instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+    }
+
+    public void Dead()
+    {
+        SceneManager.LoadScene("GameOver");
+        Debug.Log("SceneSwitch");
+    }
+
+    public void Restart()
+    {
+        Timercmd = true;
+        SceneManager.LoadScene("Main");
+        Debug.Log("Restart");
+
+        // Reset score
+        ScoreManager.instance.scorecount = 0;
+        ScoreManager.instance.score.text = "SCORE : " + ScoreManager.instance.scorecount;
+
+        // Reset lives in ScoreManager and player
+        ScoreManager.instance.ResetPlayerLives();  // This will reset player lives
+        ScoreManager.instance.lives.text = "LIVES : " + ScoreManager.instance.player.Lives.ToString();
+    }
+
+    public void mainMenu()
+    {
+        Timercmd = true;
+        SceneManager.LoadScene("MainMenu");
+        Debug.Log("Main Menu");
+    }
+
+    public void Quit()
+    {
+        Timercmd = true;
+        Application.Quit();
+        Debug.Log("quit");
+    }
+
+    public void Update()
+    {
+        if (Timercmd)
+        {
+            timer = timer + Time.deltaTime;
+            if (timer >= execute)
+            {
+                SceneManager.LoadScene("Main");
+                Debug.Log("Scene Succesfully Loaded !");
+                timer = 0;
+                Timercmd = false;
+            }
+        }
+    }
+}
+
+
+__________________________________________________________________________________________________________________________________________
+
+
+Step 1: Create the Script
+
+In Unity, go to Assets > Create > C# Script and name it GameManager.
+Open the script and paste the provided code.
+
+Step 2: Set Up the GameManager GameObject
+
+Create an empty GameObject in your scene and name it GameManager.
+Attach the GameManager script to this GameObject.
+
+Step 3: Assign the ScoreManager Script
+
+Ensure that you have a ScoreManager script in your project.
+In the Inspector, find the ScoreManager field within the GameManager script component.
+Drag and drop the ScoreManager GameObject (the object that holds the score management) into this field.
+
+Step 4: Set Up the Scenes
+
+Ensure that your Unity project has scenes named "Main", "GameOver", and "MainMenu".
+You can set up these scenes in the Build Settings:
+File > Build Settings > Scenes In Build
+Add all relevant scenes to the build.
+
+Step 5: Testing Scene Switching
+
+Run the game and test the following functions:
+Call the Dead() method to load the GameOver scene.
+Call the Restart() method to reload the Main scene and reset the score and lives.
+Call the mainMenu() method to load the MainMenu scene.
+Test the Quit() method to close the application.
+
+How It Works:
+
+The GameManager script controls the scene transitions and manages the game state.
+The Dead() method loads the GameOver scene when the player dies.
+The Restart() method resets the score and player lives, then loads the Main scene for restarting the game.
+The mainMenu() method loads the MainMenu scene.
+The Quit() method quits the application.
+The Update() method contains a timer-based system to switch scenes after a delay if Timercmd is triggered.
+
+Optional Improvements:
+
+Add a fade-out effect or transition between scenes for a smoother experience.
+Display a game-over screen with options to restart or return to the main menu.
+Implement audio or visual effects when switching scenes (e.g., a sound when the player dies).
+Add a countdown or delay before restarting the game or returning to the main menu.

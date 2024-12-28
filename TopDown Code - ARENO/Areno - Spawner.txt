@@ -1,0 +1,72 @@
+using System.Threading;
+using UnityEngine;
+using UnityEngine.UIElements;
+
+public class enemy_spawner : MonoBehaviour
+{
+    public GameObject enemy;
+    public player_control player_Control;
+
+    public float StartDelay = 2f;
+    public float Repeat = 1.5f;
+    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    void Start()
+    {
+        InvokeRepeating("SpawnRandomEnemy", StartDelay, Repeat);
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        
+    }
+
+    void SpawnRandomEnemy()
+    {
+        Instantiate(enemy, transform.position, transform.rotation);
+    }
+}
+
+
+__________________________________________________________________________________________________________________________________________
+
+
+Step 1: Create the Script
+In Unity, go to Assets > Create > C# Script and name it enemy_spawner.
+Open the script and paste the provided code.
+
+Step 2: Set Up the Enemy GameObject
+Create an Enemy Prefab that will be spawned by the spawner.
+Ensure that the enemy GameObject has all the required components (e.g., SpriteRenderer, Rigidbody2D, Collider2D).
+
+Step 3: Attach the Script to a GameObject
+Select the GameObject that will act as the enemy spawner (for example, an empty GameObject or an object in the scene).
+Drag and drop the enemy_spawner script onto this GameObject.
+
+Step 4: Link the Enemy Prefab
+In the Inspector, find the enemy_spawner script component.
+Drag and drop your Enemy Prefab into the enemy field in the script. This tells the spawner which object to instantiate.
+
+Step 5: Assign the PlayerControl Script
+In the Inspector, find the player_Control field within the enemy_spawner script component.
+Drag and drop the player_control GameObject (the object that holds the player’s control script) into this field.
+
+Step 6: Adjust Spawning Parameters
+You can adjust the StartDelay and Repeat fields in the enemy_spawner script to control when enemies start spawning and how often they spawn.
+StartDelay determines how long to wait before spawning the first enemy (in seconds).
+Repeat determines how often enemies will spawn after the initial delay (in seconds).
+
+Step 7: Test Your Setup
+Run the game. After the specified StartDelay, enemies will start spawning at the position of the spawner every Repeat seconds.
+
+How It Works:
+
+The script uses the InvokeRepeating method in the Start() function to repeatedly call the SpawnRandomEnemy() method after a delay and at a specified interval.
+The SpawnRandomEnemy() method instantiates the enemy prefab at the spawner's position and rotation using Instantiate().
+
+Optional Improvements:
+
+Add spawn locations at random points in the game world.
+Add random spawn times to make enemy appearances less predictable.
+Add a limit to how many enemies can be spawned at once to prevent overcrowding.
+Implement object pooling to optimize performance when spawning many enemies.

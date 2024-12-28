@@ -1,0 +1,91 @@
+using System.Threading;
+using UnityEngine;
+
+public class sniper_weapon : MonoBehaviour
+{
+    public float bulletspeed = 30f;
+
+    public Transform firepoint;
+    public GameObject bulletprefab;
+
+    public AudioSource SnipershootSFX;
+
+    private float timer = 0f;
+    public float cooldown = 3f;
+
+    void Start()
+    {
+
+    }
+
+    void PlayButtonSound()
+    {
+        SnipershootSFX.Play();
+    }
+
+    void Update()
+    {
+        if (timer < cooldown)
+        {
+            timer = timer + Time.deltaTime;
+        }
+
+        if (Input.GetButtonDown("Fire1") & (timer > cooldown))
+        {
+            shoot();
+            timer = 0f;
+        }
+    }
+
+    void shoot()
+    {
+        GameObject bullet = Instantiate(bulletprefab, firepoint.position, firepoint.rotation);
+        Rigidbody2D rb = bullet.GetComponent<Rigidbody2D>();
+        rb.AddForce(firepoint.up * bulletspeed, ForceMode2D.Impulse);
+        SnipershootSFX.Play();
+    }
+}
+
+__________________________________________________________________________________________________________________________________________
+
+
+Step 1: Overview of the Script
+
+This script is designed for a sniper weapon in a game. The key difference between the sniper and the previous weapons is the cooldown. The sniper weapon has a longer cooldown (3 seconds) to simulate the slower, more powerful shots of a sniper rifle.
+
+Step 2: Key Components
+
+bulletspeed: Defines how fast the bullet moves.
+firepoint: The location from which the bullet is fired.
+bulletprefab: The bullet object that will be instantiated and fired when the player presses the shoot button.
+SnipershootSFX: The sound effect for firing the sniper.
+
+Step 3: Timer and Cooldown Mechanism
+
+The cooldown variable is set to 3 seconds. This means the player can shoot once every 3 seconds, which is typical for a sniper weapon in many games.
+The timer keeps track of the time that has passed since the last shot. If the timer exceeds the cooldown, the player can shoot again.
+
+Step 4: Implementing Shooting Logic
+
+shoot(): When the player presses the Fire1 button (e.g., mouse click or Ctrl), and the cooldown has passed, the script:
+Instantiates the bullet prefab at the firepoint position.
+Adds a force to the bullet's Rigidbody2D to move it in the direction defined by firepoint.up.
+Plays the sniper shoot sound effect with SnipershootSFX.Play().
+
+Step 5: Audio and Shooting Sound
+
+The PlayButtonSound() method is defined to play the sniper shooting sound, though it’s not used in the shoot() method since SnipershootSFX.Play() is already called directly inside it.
+
+Step 6: Unity Setup
+
+Create Bullet Prefab: Ensure that you have a bullet prefab in the Unity editor with a Rigidbody2D attached and a Collider2D for collision detection.
+Assign Firepoint: In the Unity editor, drag the firepoint transform (e.g., the tip of the sniper rifle) and assign it in the firepoint field.
+Assign Bullet Prefab: Drag your bullet prefab into the bulletprefab field in the editor.
+Sound Effect: Assign an audio clip to the SnipershootSFX component for the shooting sound.
+Adjust Cooldown: You can tweak the cooldown variable to make the sniper fire faster or slower depending on your needs.
+
+Optional Improvements:
+
+Ammo System: Implement an ammo system where the sniper has a limited number of shots before needing to reload.
+Sniper Zoom: Add a zoom functionality by adjusting the camera’s field of view when aiming with the sniper.
+Bullet Drop: Add a bullet drop effect for more realism, especially at long ranges.

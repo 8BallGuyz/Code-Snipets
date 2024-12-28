@@ -1,0 +1,273 @@
+using UnityEngine;
+using UnityEngine.UI;
+
+public class ScoreManager : MonoBehaviour
+{
+    public static ScoreManager instance;
+
+    public GameObject Spawner1;
+    public GameObject Spawner2;
+    public GameObject Spawner3;
+    public GameObject Spawner4;
+    public enemyAI enemyAI;
+    public Square_AI squareAI;
+    public enemy3 enemy3;
+
+    public player_control player;
+
+    public Text score;
+    public Text lives;
+
+    public int scorecount = 0;
+    public int highscore = 0;
+    public int livescount = 3;
+
+    void Awake()
+    {
+        if (instance == null)
+        {
+            instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+    }
+
+    void Start()
+    {
+        // Ensure player lives are reset at the start of a new game
+        ResetPlayerLives();
+
+        // Update UI with the current score and lives
+        score.text = "SCORE : " + scorecount.ToString();
+        lives.text = "LIVES : " + player.Lives.ToString();
+
+        // Load the high score from PlayerPrefs
+        highscore = PlayerPrefs.GetInt("HighScore", 0);
+    }
+
+    void Update()
+    {
+        EnemyHealthManager();
+        EnemySpeedManager();
+        RemoveLive();
+    }
+
+    public void ResetScore()
+    {
+        PlayerPrefs.SetInt("HighScore", 0);
+        PlayerPrefs.Save();
+    }
+
+    public void AddPoint()
+    {
+        scorecount = scorecount + 1;
+        score.text = "SCORE : " + scorecount.ToString();
+
+        // Check if the current score is higher than the saved high score
+        if (scorecount > highscore)
+        {
+            highscore = scorecount;
+            PlayerPrefs.SetInt("HighScore", highscore);
+            PlayerPrefs.Save();
+        }
+    }
+
+    public void RemoveLive()
+    {
+        // Check if player is out of lives
+        if (player.Lives <= 0)
+        {
+            // Trigger game over or reset as needed
+            GameManager.instance.Dead();
+        }
+        else
+        {
+            lives.text = "LIVES : " + player.Lives.ToString();
+        }
+    }
+
+    public void ResetPlayerLives()
+    {
+        // Reset the player's lives to 3 (or other desired number)
+        player.Lives = 3;
+        lives.text = "LIVES : " + player.Lives.ToString();
+    }
+
+    public int GetHighScore()
+    {
+        return highscore;
+    }
+
+    public int GetScore()
+    {
+        return scorecount;
+    }
+
+    public void DecrementLives()
+    {
+        // Decrement the player's lives when they get hit
+        if (player.Lives > 0)
+        {
+            player.Lives -= 1;
+        }
+        lives.text = "LIVES : " + player.Lives.ToString();
+    }
+
+    public void EnemyHealthManager()
+    {
+        if (scorecount > 50)
+        {
+            enemyAI.Lives = 3;
+            squareAI.Lives = 4;
+            enemy3.Lives = 2;
+        }
+        if (scorecount > 100)
+        {
+            enemyAI.Lives = 4;
+            squareAI.Lives = 5;
+            enemy3.Lives = 3;
+        }
+        else
+        {
+            enemyAI.Lives = 2;
+            squareAI.Lives = 3;
+            enemy3.Lives = 1;
+        }
+    }
+
+    public void EnemySpeedManager()
+    {
+        if (scorecount > 5f)
+        {
+            enemyAI.speed = 3.1f;
+            squareAI.speed = 1.6f;
+            enemy3.speed = 4.1f;
+        }
+        if (scorecount > 10f)
+        {
+            enemyAI.speed = 3.2f;
+            squareAI.speed = 1.7f;
+            enemy3.speed = 4.2f;
+        }
+        if (scorecount > 15f)
+        {
+            enemyAI.speed = 3.3f;
+            squareAI.speed = 1.8f;
+            enemy3.speed = 4.3f;
+        }
+        if (scorecount > 20f)
+        {
+            enemyAI.speed = 3.4f;
+            squareAI.speed = 1.9f;
+            enemy3.speed = 4.4f;
+        }
+        if (scorecount > 30f)
+        {
+            enemyAI.speed = 3.5f;
+            squareAI.speed = 2f;
+            enemy3.speed = 4.5f;
+        }
+        if (scorecount > 35f)
+        {
+            enemyAI.speed = 3.5f;
+            squareAI.speed = 2f;
+            enemy3.speed = 4.5f;
+        }
+        if (scorecount > 40f)
+        {
+            enemyAI.speed = 3.6f;
+            squareAI.speed = 2.1f;
+            enemy3.speed = 4.6f;
+        }
+        if (scorecount > 45f)
+        {
+            enemyAI.speed = 3.7f;
+            squareAI.speed = 2.2f;
+            enemy3.speed = 4.7f;
+        }
+        if (scorecount > 50f)
+        {
+            enemyAI.speed = 3.8f;
+            squareAI.speed = 2.3f;
+            enemy3.speed = 4.8f;
+        }
+        if (scorecount > 55f)
+        {
+            enemyAI.speed = 3.9f;
+            squareAI.speed = 2.4f;
+            enemy3.speed = 4.9f;
+        }
+        if (scorecount > 60f)
+        {
+            enemyAI.speed = 4f;
+            squareAI.speed = 2.5f;
+            enemy3.speed = 5f;
+        }
+        else
+        {
+            enemyAI.speed = 3f;
+            squareAI.speed = 1.5f;
+            enemy3.speed = 4f;
+        }
+    }
+}
+
+
+__________________________________________________________________________________________________________________________________________
+
+
+Step 1: Create the Script
+
+In Unity, go to Assets > Create > C# Script and name it ScoreManager.
+Open the script and paste the provided code.
+
+Step 2: Set Up the ScoreManager Variables
+
+In the ScoreManager script, various variables are defined:
+
+scorecount: The current score of the player.
+livescount: The player's current number of lives.
+highscore: The highest score achieved in the game, saved across sessions using PlayerPrefs.
+
+Step 3: Assign UI Text Components
+Create UI Text components in the Canvas for displaying the score and lives.
+Assign these Text components to the corresponding variables in the ScoreManager script via the Inspector.
+
+Step 4: Initialize Score and Lives
+
+In the Start() method:
+
+ResetPlayerLives() ensures that the player starts with the initial number of lives.
+The score and lives UI texts are updated with the current score and lives.
+
+Step 5: Handle Score Changes
+
+The AddPoint() method increases the score by one point and updates the UI.
+If the current score exceeds the high score, it is updated in PlayerPrefs.
+
+Step 6: Manage Player Lives
+
+The DecrementLives() method decreases the player’s lives when they are hit by enemies.
+The RemoveLive() method checks if the player has lost all lives and triggers a Game Over if necessary.
+
+Step 7: Enemy Health and Speed Management
+
+The EnemyHealthManager() adjusts the health of enemies based on the current score. For example, if the score is above 50, enemy health increases.
+The EnemySpeedManager() increases enemy speed as the score goes up. The speed changes are applied incrementally based on the score.
+
+Step 8: Reset Score and Lives
+
+The ResetPlayerLives() method resets the player's lives to 3 at the start of the game.
+The ResetScore() method resets the highscore stored in PlayerPrefs to 0.
+
+How It Works:
+
+AddPoint() updates the score when the player achieves something, like defeating an enemy.
+DecrementLives() reduces the player’s lives and updates the UI accordingly.
+EnemyHealthManager() and EnemySpeedManager() ensure that the game becomes progressively more challenging as the player scores more points.
+ResetScore() and ResetPlayerLives() are used to reset values at the start of a new game or after a reset.
+
+Optional Improvements:
+
+Add visual effects when the player gains points or loses lives, such as a flash on the screen or sound effects.
+Implement a combo multiplier system to reward the player for quick kills or other achievements.
+Display the high score in the main menu and allow the player to set a goal to beat their high score.

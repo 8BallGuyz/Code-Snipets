@@ -1,0 +1,45 @@
+public int Lives = 1;
+public GameManager gameManager;
+
+void OnCollisionEnter2D(Collision2D collision)
+{
+    if (collision.gameObject.CompareTag("Enemy"))
+    {
+        Lives = Lives - 1;
+
+        // Check if lives are 0 or less and call GameOver
+        if (Lives <= 0)
+        {
+            GameOver();
+        }
+    }
+}
+
+public void GameOver()
+{
+    // Call the GameOverScreen's Setup method
+    gameManager.Dead();
+}
+
+
+__________________________________________________________________________________________________________________________________________
+
+
+How It Works:
+
+The OnCollisionEnter2D method detects collisions with objects tagged as "Enemy".
+Lives are decremented by 1 on each collision.
+If Lives reach zero, the GameOver() method is triggered. This method calls gameManager.Dead(), which should handle game-over logic such as displaying a game over screen.
+
+Setup Steps:
+
+Ensure Enemy GameObjects are tagged as "Enemy".
+Set an appropriate starting value for Lives in the Inspector.
+Attach a GameManager object to the gameManager variable in the Inspector.
+Make sure the GameManager script has a Dead() method to handle game-over functionality.
+
+🛠️ Optional Improvements:
+
+Add animations for movement, sprinting, and game-over states.
+Implement a cooldown or stamina system for sprinting.
+Add sound effects for damage or sprint activation.

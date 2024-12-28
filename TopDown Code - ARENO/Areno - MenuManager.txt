@@ -1,0 +1,115 @@
+using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.SceneManagement;
+using Unity.VisualScripting;
+
+public class MenuManager : MonoBehaviour
+{
+    public GameObject MainMenuUI;
+
+    public float timer = 0;
+    public float execute = 1;
+    private bool Timercmd = false;
+    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    public void GameOver()
+    {
+        MainMenuUI.SetActive(true);
+    }
+
+    public void Restart()
+    {
+        Timercmd = true;
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        Debug.Log("Restart");
+    }
+
+    public void mainMenu()
+    {
+        Timercmd = true;
+        SceneManager.LoadScene("MainMenu");
+        SceneManager.LoadScene("MainMenu", LoadSceneMode.Single);
+        Debug.Log("Main Menu Clicked");
+    }
+
+    public void Quit()
+    {
+        Timercmd = true;
+        Application.Quit();
+        Debug.Log("quit");
+    }
+
+    public void StartGame()
+    {
+        Timercmd = true;
+        Debug.Log("Timer Started");
+    }
+
+    public void Update()
+    {
+        if (Timercmd)
+        {
+        timer = timer + Time.deltaTime;
+            if (timer >= execute)
+            {
+                SceneManager.LoadScene("Main");
+                Debug.Log("Scene Succesfully Loaded !");
+                timer = 0;
+                Timercmd = false;
+            }
+        }
+    }
+}
+
+
+__________________________________________________________________________________________________________________________________________
+
+
+Step 1: Create the Script
+
+In Unity, go to Assets > Create > C# Script and name it MenuManager.
+Open the script and paste the provided code.
+
+Step 2: Set Up the Main Menu UI
+
+Create a UI GameObject for your main menu, such as a canvas with buttons for starting the game, restarting, and quitting.
+Make sure this UI is set as inactive at the start (this can be done via the Inspector).
+In the MenuManager script component, find the MainMenuUI field and drag the MainMenuUI GameObject into this field.
+
+Step 3: Set Up Scene Management
+
+Make sure that the scenes you want to switch between (e.g., MainMenu, Main) are added in the Build Settings (File > Build Settings).
+This ensures that Unity knows how to load these scenes.
+
+Step 4: Assign Buttons to Menu Actions
+
+Create buttons in your MainMenuUI for actions like Start Game, Restart, and Quit.
+For each button, set the OnClick() event to trigger the appropriate function in the MenuManager script:
+
+For Start Game, call StartGame().
+For Restart, call Restart().
+For Quit, call Quit().
+
+Step 5: Implement and Test Timer for Scene Transition
+
+The StartGame() method in the MenuManager script triggers a timer when the game starts.
+In the Update() method, the timer is increased, and once it reaches the specified time (execute), the scene is switched to the Main scene.
+Test the scene transitions by starting the game and ensuring it correctly switches between scenes after the timer expires.
+
+Step 6: Test the Menu Functions
+
+Make sure the MainMenuUI is properly activated when the game ends (through the GameOver() method).
+Ensure that the Restart() method reloads the current scene and the Quit() method closes the application.
+
+How It Works:
+
+GameOver() sets the MainMenuUI to active, displaying the main menu when the game is over.
+Restart() reloads the current scene, giving the player a fresh start.
+mainMenu() loads the MainMenu scene, allowing the player to return to the main menu.
+Quit() exits the game when called.
+StartGame() sets a timer to transition from the main menu to the game scene after a brief delay.
+
+Optional Improvements:
+
+Add animations for menu transitions for a smoother experience.
+Create a visual indicator for the timer, such as a loading screen or progress bar.
+Display player stats on the menu, such as high scores or achievements.

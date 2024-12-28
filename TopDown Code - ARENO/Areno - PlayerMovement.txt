@@ -1,0 +1,26 @@
+Vector2 movement;
+
+void Update()
+{
+    movement.x = Input.GetAxisRaw("Horizontal");
+    movement.y = Input.GetAxisRaw("Vertical");
+}
+
+void FixedUpdate()
+{
+    rb.MovePosition(rb.position + movement * speed * Time.fixedDeltaTime);
+}
+
+
+__________________________________________________________________________________________________________________________________________
+
+
+How It Works:
+
+movement.x and movement.y capture input from Horizontal and Vertical axes.
+The FixedUpdate() method applies movement to the Rigidbody using MovePosition.
+Movement speed is influenced by the speed variable.
+Setup Steps:
+
+Ensure the Player GameObject has a Rigidbody2D component.
+Set Rigidbody2D's Body Type to Dynamic.

@@ -1,0 +1,28 @@
+public float speed;
+public float defaultspeed;
+public float sprintspeed;
+
+void sprint()
+{
+    if(Input.GetKey(KeyCode.LeftShift))
+    {
+        speed = sprintspeed;
+    }
+    else
+    {
+        speed = defaultspeed;
+    }
+}
+
+
+__________________________________________________________________________________________________________________________________________
+
+
+How It Works:
+
+In the sprint() method, the speed variable is set to sprintspeed when Left Shift is held.
+When Left Shift is released, speed reverts to defaultspeed.
+The sprint function is called in FixedUpdate.
+Setup Steps:
+
+Set appropriate values for defaultspeed and sprintspeed in the Inspector.

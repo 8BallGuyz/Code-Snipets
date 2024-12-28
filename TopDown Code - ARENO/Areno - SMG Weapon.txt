@@ -1,0 +1,87 @@
+using UnityEngine;
+
+public class SMG_weapon : MonoBehaviour
+{
+    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    public float bulletspeed = 20f;
+
+    public Transform firepoint;
+    public GameObject bulletprefab;
+
+    private float timer = 0f;
+    public float cooldown = 1f;
+
+    void Start()
+    {
+
+    }
+
+
+    void Update()
+    {
+        if (timer < cooldown)
+        {
+            timer = timer + Time.deltaTime;
+        }
+
+        if (Input.GetButton("Fire1") & (timer > cooldown))
+        {
+            shoot();
+            timer = 0f;
+        }
+    }
+
+    void shoot()
+    {
+        GameObject bullet = Instantiate(bulletprefab, firepoint.position, firepoint.rotation);
+        Rigidbody2D rb = bullet.GetComponent<Rigidbody2D>();
+        rb.AddForce(firepoint.up * bulletspeed, ForceMode2D.Impulse);
+    }
+}
+
+
+__________________________________________________________________________________________________________________________________________
+
+
+Step 1: Create the Script
+
+Create a new C# script in Unity and name it SMG_weapon.
+Open the script and replace its content with the provided code.
+
+Step 2: Set Up Variables
+The script uses several public variables:
+
+bulletspeed: Controls how fast the bullet travels after being shot.
+firepoint: The position and rotation of the gun from which the bullets are fired.
+bulletprefab: The bullet GameObject to be instantiated when the gun fires.
+cooldown: The time interval required before another shot can be fired, to prevent continuous firing.
+
+Step 3: Implement the Update Method
+The Update() method works as follows:
+
+Cooldown Timer: Each frame, the timer variable increases by Time.deltaTime. This accumulates until the cooldown period has passed.
+Input Detection: When the Fire1 button (usually mouse left-click or Ctrl key) is pressed, and the cooldown has elapsed, the shoot() method is called to fire a bullet. After firing, the timer is reset to 0 to begin counting for the next cooldown period.
+
+Step 4: Implement the Shoot Method
+The shoot() method does the following:
+
+Instantiate the Bullet: A bullet GameObject is created at the firepoint position, and it is rotated according to the firepoint.rotation.
+Add Force: The bullet's Rigidbody2D component is used to apply an Impulse force in the direction of firepoint.up, which propels the bullet forward at the bulletspeed.
+
+Step 5: Test and Setup in Unity
+
+Create Bullet Prefab: Make sure you have a bullet prefab with a Rigidbody2D component attached to it. The gravity scale should be set to 0 to prevent gravity from affecting the bullet.
+Assign Firepoint and Bullet Prefab: In the Unity Inspector, link the firepoint and bulletprefab fields to the appropriate objects in your scene.
+Test the Weapon: Press Fire1 to fire bullets. Ensure the bullets are instantiated and move at the desired speed.
+
+How It Works:
+
+Firing Mechanism: The SMG fires bullets while Fire1 is held down, as long as the cooldown period has elapsed. This simulates continuous fire, unlike the pistol_weapon script, which is designed to fire once per button press.
+Bullet Movement: Each shot creates a bullet that moves in the direction the gun is pointing (defined by firepoint.up), and it is propelled forward using Rigidbody2D with impulse force.
+
+Optional Improvements:
+
+Continuous Firing: Modify the cooldown to make it shorter or handle the continuous firing more realistically.
+Ammo Management: Implement an ammo system where the SMG can only fire if there is remaining ammo, with reloading functionality.
+Sound Effects: Add an audio source to play shooting sounds on each shot.
+Muzzle Flash: Instantiate a visual muzzle flash at the firepoint each time the gun is fired.

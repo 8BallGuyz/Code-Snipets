@@ -1,0 +1,75 @@
+using UnityEngine;
+
+public class player_collider : MonoBehaviour
+{
+    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    void Start()
+    {
+        
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        
+    }
+
+    void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Enemy"))
+        {
+            ScoreManager.instance.DecrementLives();  // Decrease lives when hit
+        }
+    }
+}
+
+
+__________________________________________________________________________________________________________________________________________
+
+
+
+Step 1: Create the Script
+
+In Unity, go to Assets > Create > C# Script and name it player_collider.
+Open the script and paste the provided code.
+
+Step 2: Attach the Script to the Player Object
+
+Select the Player GameObject in the Hierarchy.
+Drag and drop the player_collider script onto the Player GameObject.
+
+Step 3: Set Up Tags
+
+Ensure that the Enemy GameObjects are tagged as "Enemy".
+Select each Enemy prefab or object.
+In the Inspector, set its Tag to "Enemy" (or create a new tag if it doesn’t exist).
+
+Step 4: Set Up the ScoreManager
+
+Make sure you have a ScoreManager script in your project that handles the player’s lives.
+Ensure it has a public static instance and a DecrementLives() method.
+For example:
+
+ScoreManager.instance should point to the active ScoreManager.
+DecrementLives() should handle reducing the player’s lives.
+Step 5: Add Rigidbody2D and Collider2D Components
+
+Make sure both the Player GameObject and Enemy GameObjects have Rigidbody2D and Collider2D components attached.
+At least one of them must have its Rigidbody2D's "Body Type" set to Dynamic for collision detection to work.
+
+Step 6: Test Your Setup
+
+Run the game and allow the Player to collide with an Enemy object.
+Each time a collision occurs, the ScoreManager should reduce the player’s lives.
+
+How It Works:
+
+The script uses the OnCollisionEnter2D method, which detects collisions between two Collider2D components.
+When a collision occurs, it checks if the colliding object is tagged as "Enemy".
+If the condition is true, the ScoreManager's DecrementLives() method is called, reducing the player's lives.
+
+Optional Improvements:
+
+Add visual or sound effects when the player loses a life.
+Display a Game Over screen when lives reach zero.
+Implement invincibility frames to prevent rapid life loss from multiple collisions.

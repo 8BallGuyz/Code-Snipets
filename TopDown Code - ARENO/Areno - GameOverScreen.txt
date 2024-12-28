@@ -1,0 +1,70 @@
+using UnityEngine;
+using UnityEngine.UI;
+
+public class GameOverScreen : MonoBehaviour
+{
+    public Text finalscore;
+
+    public void Start()
+    {
+        // Optionally, you could initialize something here if needed
+    }
+
+    public void Update()
+    {
+        gameObject.SetActive(true);
+        int highscore = PlayerPrefs.GetInt("HighScore", 0);
+        finalscore.text = "HIGHSCORE : " + highscore;
+    }
+}
+
+
+__________________________________________________________________________________________________________________________________________
+
+
+Step 1: Create the Script
+
+In Unity, go to Assets > Create > C# Script and name it GameOverScreen.
+Open the script and paste the provided code.
+
+Step 2: Set Up the GameOverScreen GameObject
+
+Create a UI Text GameObject in your scene (or use any other UI element you'd like for the Game Over screen).
+Name the GameObject GameOverScreen.
+Attach the GameOverScreen script to this GameObject.
+
+Step 3: Assign the Final Score Text
+
+In the Inspector, find the finalscore field within the GameOverScreen script component.
+Drag and drop the Text UI element (the one you want to display the score) into this field.
+
+Step 4: Implement HighScore Saving
+
+Ensure that your game saves the high score to PlayerPrefs when the player achieves a new high score.
+For example, you can use this code to save the high score:
+
+
+int currentScore = ScoreManager.instance.scorecount;
+int highscore = PlayerPrefs.GetInt("HighScore", 0);
+if (currentScore > highscore)
+{
+    PlayerPrefs.SetInt("HighScore", currentScore);
+}
+
+
+This code checks if the current score is greater than the saved high score and updates it accordingly.
+
+Step 5: Test the Game Over Screen
+Run the game and trigger the GameOverScreen when the game is over.
+Ensure that the finalscore UI Text element correctly displays the high score stored in PlayerPrefs.
+
+How It Works:
+
+The GameOverScreen script runs in the Update() method, making the GameOver screen active every frame.
+The finalscore UI element is updated with the high score, fetched from PlayerPrefs.
+PlayerPrefs.GetInt("HighScore", 0) retrieves the saved high score, defaulting to 0 if no score is saved.
+
+Optional Improvements:
+Add a button to restart the game or return to the main menu from the game over screen.
+Use animations or fading effects to make the transition to the GameOver screen smoother.
+Show the player’s final score (not just the high score) along with other stats on the game over screen.

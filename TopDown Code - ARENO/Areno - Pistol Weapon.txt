@@ -1,0 +1,90 @@
+using System.Threading;
+using UnityEngine;
+
+public class pistol_weapon : MonoBehaviour
+{
+    public float bulletspeed = 20f;
+
+    public Transform firepoint;
+    public GameObject bulletprefab;
+
+    private float timer = 0f;
+    public float cooldown = 1f;
+
+    void Start()
+    {
+
+    }
+
+
+    void Update()
+    {
+        if (timer < cooldown)
+        {
+            timer = timer + Time.deltaTime;
+        }
+
+        if (Input.GetButtonDown("Fire1") & (timer>cooldown))
+        {
+            shoot();
+            timer = 0f;
+        }
+    }
+
+    void shoot()
+    {
+        GameObject bullet = Instantiate(bulletprefab, firepoint.position, firepoint.rotation);
+        Rigidbody2D rb = bullet.GetComponent<Rigidbody2D>();
+        rb.AddForce(firepoint.up * bulletspeed, ForceMode2D.Impulse);
+    }
+}
+
+
+__________________________________________________________________________________________________________________________________________
+
+
+
+Step 1: Create the Script
+
+Create a new C# script in Unity by going to Assets > Create > C# Script and naming it pistol_weapon.
+Open the script and paste the provided code.
+
+Step 2: Set Up the Variables
+The script defines several variables:
+
+bulletspeed: Controls the speed at which the bullet travels after being shot.
+firepoint: A Transform object that defines the starting position and rotation for shooting the bullet.
+bulletprefab: A reference to the bullet prefab, which will be instantiated when the player fires the weapon.
+cooldown: Defines the cooldown time between shots, ensuring that the player can't fire continuously without a pause.
+
+Step 3: Implement the Update Method
+In the Update() method, the following logic is implemented:
+
+Cooldown Timer: The timer is incremented by Time.deltaTime each frame until it reaches the cooldown threshold.
+Input Detection: When the Fire1 button (usually left mouse click or Ctrl) is pressed, and the cooldown period has passed, the shoot() method is called to fire the weapon. After the shot, the timer is reset to 0.
+
+Step 4: Implement the Shoot Method
+The shoot() method does the following:
+
+Instantiate the Bullet: A new bullet is instantiated at the firepoint position, with the firepoint rotation (this ensures the bullet travels in the correct direction).
+Apply Force: The bullet's Rigidbody2D is used to apply force in the direction of the firepoint.up vector, propelling the bullet forward at the specified bulletspeed using ForceMode2D.Impulse.
+
+Step 5: Test Your Setup
+To test the script in Unity:
+
+Create the Bullet Prefab: Ensure you have a bullet prefab with a Rigidbody2D attached and set to Gravity Scale of 0 for no gravity effects.
+Assign References: In the Inspector, assign the firepoint (e.g., the muzzle of the pistol) and bulletprefab (your bullet GameObject) to the corresponding fields.
+Check Input: Make sure the Fire1 input is configured in Unity's input settings (usually the left mouse button).
+
+How It Works:
+
+pistol_weapon controls the shooting mechanism, allowing the player to fire bullets when the Fire1 input is pressed, as long as the cooldown period has passed.
+Each shot creates a bullet that travels in the direction the weapon is pointing (defined by firepoint.up), and the force applied makes the bullet move forward.
+A timer ensures there’s a delay between each shot.
+
+Optional Improvements:
+
+Add sound effects (e.g., for the pistol shot).
+Create visual effects like muzzle flashes.
+Implement a system for reloading after a set number of shots or using ammo.
+Modify the script to handle different weapon types with varying bullet speeds or fire rates.

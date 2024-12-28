@@ -1,0 +1,133 @@
+using UnityEngine;
+
+public class enemyAI : MonoBehaviour
+{
+    public player_control player_Control;
+
+    public float speed = 3;
+    public Rigidbody2D rb;
+
+    public int Lives = 2;
+
+    private GameObject target;  // Instead of directly referencing the player
+    private float distance;
+
+    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    void Start()
+    {
+        rb = GetComponent<Rigidbody2D>();
+
+        // Find the GameObject with the tag "follow"
+        target = GameObject.FindGameObjectWithTag("follow");
+    }
+
+    // Update is called once per frame
+    void FixedUpdate()
+    {
+        if (target != null)
+        {
+            distance = Vector2.Distance(transform.position, target.transform.position);
+            Vector2 direction = target.transform.position - transform.position;
+
+            // Move towards the target
+            transform.position = Vector2.MoveTowards(transform.position, target.transform.position, speed * Time.deltaTime);
+
+            Rotation();
+        }
+    }
+
+    void Rotation()
+    {
+        if (target != null)
+        {
+            Vector2 lookDir = transform.position - target.transform.position;
+            float angle = Mathf.Atan2(lookDir.y, lookDir.x) * Mathf.Rad2Deg - 45f;
+            rb.rotation = angle;
+        }
+    }
+
+    void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("bullet"))
+        {
+            TakeDamageAR();
+            Destroy(collision.gameObject); // Destroy the bullet on impact
+        }
+        if (collision.gameObject.CompareTag("sniper_bullet"))
+        {
+            TakeDamageSniper();
+            Destroy(collision.gameObject); // Destroy the bullet on impact
+        }
+    }
+
+    public void TakeDamageAR()
+    {
+        Lives = Lives - 1;
+
+        if (Lives <= 0)
+        {
+            Destroy(gameObject);
+            ScoreManager.instance.AddPoint();
+        }
+    }
+
+    public void TakeDamageSniper()
+    {
+        Lives = Lives - 2;
+
+        if (Lives <= 0)
+        {
+            Destroy(gameObject);
+            ScoreManager.instance.AddPoint();
+        }
+    }
+}
+
+
+__________________________________________________________________________________________________________________________________________
+
+
+Step 1: Create the Script
+
+In Unity, go to Assets > Create > C# Script and name it enemyAI.
+Open the script and paste the provided code.
+
+Step 2: Set Up the Enemy AI GameObject
+
+Create an Enemy AI Prefab that will have the enemyAI script attached.
+Ensure that the enemy GameObject has all the required components (e.g., SpriteRenderer, Rigidbody2D, Collider2D).
+
+Step 3: Assign the PlayerControl Script
+
+In the Inspector, find the player_Control field within the enemyAI script component.
+Drag and drop the player_control GameObject (the object that holds the player’s control script) into this field.
+
+Step 4: Assign the Target Tag
+
+Make sure the player or the object the enemy should follow has the tag "follow" assigned.
+Select the Player GameObject.
+In the Inspector, set its Tag to "follow" (or create a new tag if it doesn’t exist).
+
+Step 5: Add Rigidbody2D and Collider2D Components
+
+Ensure the enemy GameObject has both Rigidbody2D and Collider2D components attached.
+The Rigidbody2D component should have Body Type set to Dynamic for proper physics interaction.
+
+Step 6: Test Your Setup
+
+Run the game, and the enemy should start following the player.
+If the enemy collides with a bullet, it should take damage and eventually be destroyed when its health reaches zero.
+
+How It Works:
+
+The enemyAI script allows the enemy to follow a target with the tag "follow" (usually the player).
+The FixedUpdate() function moves the enemy towards the target using Vector2.MoveTowards and handles rotation using the Rotation() method, making the enemy face the player.
+The OnCollisionEnter2D() method detects collisions with bullet or sniper_bullet tags and reduces the enemy's health accordingly.
+When the enemy's health reaches 0, it is destroyed, and a point is added to the score.
+
+Optional Improvements:
+
+You can add animations for the enemy (e.g., walking, dying).
+Implement different types of enemies with varying speeds and health.
+Add a sound effect when the enemy is hit by a bullet.
+Implement pathfinding to make the enemy navigate obstacles instead of just moving directly towards the player.

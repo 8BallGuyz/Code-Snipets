@@ -1,0 +1,95 @@
+using UnityEngine;
+
+public class AR_weapon : MonoBehaviour
+{
+    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    public float bulletspeed = 20f;
+
+    public Transform firepoint;
+    public GameObject bulletprefab;
+
+    private float timer = 0f;
+    public float cooldown = 1f;
+
+    public AudioSource ARshootSFX;
+
+    void Start()
+    {
+
+    }
+
+
+    void Update()
+    {
+        if (timer < cooldown)
+        {
+            timer = timer + Time.deltaTime;
+        }
+
+        if (Input.GetButton("Fire1") & (timer > cooldown))
+        {
+            shoot();
+            timer = 0f;
+        }
+    }
+
+    void shoot()
+    {
+        GameObject bullet = Instantiate(bulletprefab, firepoint.position, firepoint.rotation);
+        Rigidbody2D rb = bullet.GetComponent<Rigidbody2D>();
+        rb.AddForce(firepoint.up * bulletspeed, ForceMode2D.Impulse);
+        ARshootSFX.Play();
+    }
+}
+
+
+__________________________________________________________________________________________________________________________________________
+
+
+
+Step 1: Create the Script
+
+In Unity, go to Assets > Create > C# Script and name it AR_weapon.
+Open the script and paste the provided code.
+
+Step 2: Set Up the Variables
+
+The script contains several variables:
+
+bulletspeed: Controls how fast the bullets travel after being fired.
+firepoint: A Transform object that determines where the bullet is spawned and in which direction it is fired.
+bulletprefab: A reference to the bullet prefab that will be instantiated when shooting.
+cooldown: The time interval between each shot, preventing the player from firing continuously without a break.
+ARshootSFX: The audio source for the shooting sound effect.
+
+Step 3: Initialize Timer and Input
+
+
+In Update(), a timer checks the cooldown period between shots:
+If the timer is less than the cooldown, it adds Time.deltaTime to the timer.
+If the Fire1 button (default left mouse button or Ctrl) is pressed and the cooldown has passed, the shoot() method is called, and the timer is reset.
+
+Step 4: Implement the Shoot Mechanism
+
+In shoot(), a bullet is instantiated at the firepoint position with the firepoint rotation.
+The bullet's Rigidbody2D component is used to apply force to the bullet, making it move in the direction of the firepoint.up vector.
+The shooting sound is triggered by playing ARshootSFX.
+
+Step 5: Test Your Setup
+To test the script:
+
+Ensure that the firepoint is properly positioned in front of the weapon.
+Create a bullet prefab with a Rigidbody2D component attached to it.
+Assign the bulletprefab and ARshootSFX to the corresponding fields in the Inspector.
+
+How It Works:
+
+The AR_weapon script controls shooting behavior by listening for user input and spawning bullets when appropriate.
+The bullet is instantiated and given force in the direction the weapon is facing using firepoint.up.
+The cooldown timer prevents rapid firing by ensuring there's a delay between shots.
+
+Optional Improvements:
+
+Add visual effects for firing, such as muzzle flash or bullet trails.
+Implement a system for reloading or changing magazines after a certain number of shots.
+Add a crosshair UI element that adjusts based on player movement or accuracy.
