@@ -1,0 +1,55 @@
+using UnityEngine;
+
+public class camera_position : MonoBehaviour
+{
+    public GameObject player;
+    public Vector3 positioning = new Vector3(0f,0f,-10f);
+    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    void Start()
+    {
+        
+    }
+
+    // Update is called once per frame
+    void LateUpdate()
+    {
+        transform.position = player.transform.position + positioning;
+    }
+}
+
+
+__________________________________________________________________________________________________________________________________________
+
+
+Step 1: Create the Script
+
+In Unity, go to Assets > Create > C# Script and name it camera_position.
+Open the script and paste the provided code.
+
+Step 2: Attach the Script to the Camera
+
+Select the Main Camera in the Hierarchy.
+Drag and drop the camera_position script onto the Main Camera.
+
+Step 3: Assign the Player Object
+
+In the Inspector panel of the Main Camera, locate the Player field in the script.
+Drag and drop your Player GameObject into the Player field.
+Ensure the default offset (positioning) is set to (0, 0, -10) to keep the camera behind the player on the Z-axis.
+
+Step 4: Test Your Setup
+
+Press Play in Unity.
+Move your player using your controls.
+The camera will smoothly follow the player while maintaining the specified offset.
+
+How It Works:
+
+The script references the Player GameObject and adjusts the camera's position based on the player's position.
+A Vector3 offset determines how far the camera stays from the player.
+LateUpdate() ensures the camera updates after the player has moved, preventing laggy or jittery movement.
+
+Optional Improvements:
+
+Add smooth camera movement with interpolation using Vector3.Lerp for more fluid transitions.
+Adjust the offset in the Inspector for better framing based on your game’s design.
